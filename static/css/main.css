@@ -12,7 +12,7 @@
     --progress-high: #2ecc71;
 }
 
-/* Apply theme to html element to prevent flash */
+/* Applying these to html element to prevent flash */
 html.theme-dark {
     --bg-color: #181816;
     --text-color: #f1f1ed;
@@ -139,7 +139,7 @@ body {
     margin-left: 8px;
 }
 
-/* Optional: Add a subtle animation when switching views */
+/* Optional: Adds a subtle animation when switching views */
 .menu-view {
     animation: fadeIn 0.15s ease;
 }

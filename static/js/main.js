@@ -30,7 +30,7 @@ function setTheme(theme) {
     });
 }
 
-// Apply theme IMMEDIATELY before page renders (prevents flash)
+// Applying these IMMEDIATELY before page renders (prevents flash)
 (function() {
     const savedTheme = localStorage.getItem('theme') || 'theme-light';
     document.documentElement.className = savedTheme;
@@ -95,7 +95,6 @@ function openAddCategoryModal() { openModal('addCategoryModal'); }
 function openAddTaskModal() { openModal('addTaskModal'); }
 function openShareModal() { openModal('shareModal'); }
 
-// FIND closeAllModals (around line 64) and ADD this at the end:
 function closeAllModals() {
     document.getElementById('modalOverlay').classList.remove('active');
     document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
@@ -436,10 +435,8 @@ function deleteTaskFromDate(taskId, dateStr, taskTitle) {
         return;
     }
     
-    // ✨ ADD THIS LINE - Close the modal before submitting
     closeAllModals();
     
-    // Rest stays the same
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = '/history/delete-task-from-date';
@@ -522,7 +519,7 @@ function updateTutorialStep() {
 
 // ========================= INITIALIZATION =========================
 document.addEventListener("DOMContentLoaded", function() {
-    // Load saved theme on page load (apply to body as well)
+    // Load saved theme on page load 
     const savedTheme = localStorage.getItem('theme') || 'theme-light';
     document.body.className = savedTheme;
     

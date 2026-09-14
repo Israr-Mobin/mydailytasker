@@ -82,9 +82,9 @@ else:
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///tasker.db"
     print("⚠️  Using SQLite database (development only)")
 
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False # Turns off tracking of changes in objects e.g. user.name = "Bob"
 
-db.init_app(app)
+db.init_app(app) # Attaching db to app.py
 
 
 # ====================
@@ -104,12 +104,12 @@ limiter = Limiter(
 @app.after_request
 def set_security_headers(response):
     """Add security headers to all responses."""
-    response.headers['X-Content-Type-Options'] = 'nosniff'
-    response.headers['X-Frame-Options'] = 'DENY'
-    response.headers['X-XSS-Protection'] = '1; mode=block'
+    response.headers['X-Content-Type-Options'] = 'nosniff' # Dont guess file types
+    response.headers['X-Frame-Options'] = 'DENY' # Dont embed my side in iframes
+    response.headers['X-XSS-Protection'] = '1; mode=block' # Block suspicious scripts
     
     # Only set HSTS in production with HTTPS
-    if not app.debug and request.is_secure:
+    if not app.debug and request.is_secure: # Only use secure connections https(in production)
         response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
     
     return response
@@ -118,13 +118,13 @@ def set_security_headers(response):
 # ====================
 # SQLite Foreign Keys Support
 # ====================
-@event.listens_for(Engine, "connect")
+@event.listens_for(Engine, "connect") # Run this function every time a new database connection is made
 def enable_sqlite_foreign_keys(dbapi_connection, connection_record):
     """
     Enable foreign key constraints in SQLite.
     Required for CASCADE deletions to work properly.
     """
-    if isinstance(dbapi_connection, sqlite3.Connection):
+    if isinstance(dbapi_connection, sqlite3.Connection): # Make sure its a sqlite3(db) connection
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA foreign_keys=ON;")
         cursor.close()
@@ -140,7 +140,7 @@ login_manager.login_message_category = "info"
 login_manager.init_app(app)
 
 
-@login_manager.user_loader
+@login_manager.user_loader # Runs on every loading on the page 
 def load_user(user_id):
     """Load user by ID for Flask-Login."""
     return User.query.get(int(user_id))
